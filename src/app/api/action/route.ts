@@ -15,7 +15,7 @@ export const GET = async () => {
     links: {
       actions: [
         {
-          type: "linked",
+          type: "transaction",
           label: "Create Duel",
           href: "/api/clash-duel?playerTag={playerTag}&playerName={playerName}&wagerAmount={wagerAmount}&token={token}",
           parameters: [
