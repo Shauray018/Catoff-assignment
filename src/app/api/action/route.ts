@@ -1,10 +1,4 @@
-import {
-  ActionPostResponse,
-  createActionHeaders,
-  createPostResponse,
-  ActionGetResponse,
-  ActionPostRequest,
-} from "@solana/actions";
+import { createActionHeaders, ActionGetResponse } from "@solana/actions";
 
 const headers = createActionHeaders({
   chainId: "mainnet",
