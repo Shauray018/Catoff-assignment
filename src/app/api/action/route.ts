@@ -5,7 +5,7 @@ const headers = createActionHeaders({
   actionVersion: "2.2.1",
 });
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const payload: ActionGetResponse = {
     title: "Clash Royale Duel",
     icon: "https://play-lh.googleusercontent.com/rIh0eHI4fg1MJphEhIFeLZS_rxZVRSL9-LuHmR5_-BsLqmH6-S2J7fPhR4t0fPRz4Q=w240-h480-rw",
