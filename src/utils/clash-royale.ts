@@ -32,25 +32,30 @@ interface BattleLogEntry {
   ];
 }
 
+// Helper function to properly encode player tags
+function encodePlayerTag(tag: string): string {
+  // Ensure tag starts with # and encode it
+  const formattedTag = tag.startsWith("#") ? tag : `#${tag}`;
+  return formattedTag.replace("#", "%23");
+}
+
 export async function validatePlayer(
   tag: string
 ): Promise<ClashRoyalePlayer | null> {
-  // Format tag to ensure it has #
-  const formattedTag = tag.startsWith("#") ? tag : `#${tag}`;
-
   try {
+    const encodedTag = encodePlayerTag(tag);
     const response = await fetch(
-      `https://api.clashroyale.com/v1/players/${encodeURIComponent(
-        formattedTag
-      )}`,
+      `https://api.clashroyale.com/v1/players/${encodedTag}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.CLASH_ROYALE_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
     if (!response.ok) {
+      console.error("Player validation failed:", await response.text());
       return null;
     }
 
@@ -64,21 +69,20 @@ export async function validatePlayer(
 export async function getBattleLog(
   playerTag: string
 ): Promise<BattleLogEntry[]> {
-  const formattedTag = playerTag.startsWith("#") ? playerTag : `#${playerTag}`;
-
   try {
+    const encodedTag = encodePlayerTag(playerTag);
     const response = await fetch(
-      `https://api.clashroyale.com/v1/players/${encodeURIComponent(
-        formattedTag
-      )}/battlelog`,
+      `https://api.clashroyale.com/v1/players/${encodedTag}/battlelog`,
       {
         headers: {
           Authorization: `Bearer ${process.env.CLASH_ROYALE_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
     if (!response.ok) {
+      console.error("Battle log fetch failed:", await response.text());
       return [];
     }
 
