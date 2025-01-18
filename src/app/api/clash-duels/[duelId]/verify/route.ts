@@ -2,7 +2,10 @@ import { NextRequest } from "next/server";
 import { getDuel, updateDuelResult } from "@/utils/duel-service";
 import { checkBattleResult } from "@/utils/clash-royale";
 
-export async function POST(request: NextRequest, params: any) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { duelId: string } }
+) {
   const { duelId } = params;
 
   try {
