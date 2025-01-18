@@ -1,10 +1,7 @@
 import { NextRequest } from "next/server";
 import { cancelDuel, getDuel } from "@/utils/duel-service";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { duelId: string } }
-) {
+export async function POST(request: NextRequest, params: any) {
   const { duelId } = params;
 
   try {

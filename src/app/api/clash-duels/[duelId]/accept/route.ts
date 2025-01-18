@@ -2,10 +2,8 @@ import { NextRequest } from "next/server";
 import { validatePlayer } from "@/utils/clash-royale";
 import { acceptDuel, getDuel } from "@/utils/duel-service";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { duelId: string } }
-): Promise<Response> {
+// Updated route handler with proper typing
+export async function POST(request: NextRequest, params: any) {
   const { duelId } = params;
   const searchParams = request.nextUrl.searchParams;
   const playerTag = searchParams.get("playerTag");
