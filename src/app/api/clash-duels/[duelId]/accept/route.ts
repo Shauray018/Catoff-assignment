@@ -5,7 +5,7 @@ import { acceptDuel, getDuel } from "@/utils/duel-service";
 export async function POST(
   request: NextRequest,
   { params }: { params: { duelId: string } }
-) {
+): Promise<Response> {
   const { duelId } = params;
   const searchParams = request.nextUrl.searchParams;
   const playerTag = searchParams.get("playerTag");
