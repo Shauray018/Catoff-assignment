@@ -19,7 +19,7 @@ async function validatePlayer(tag: string): Promise<ClashRoyalePlayer | null> {
       )}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.CLASH_ROYALE_API_KEY}`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjA2OGUyMjA1LWU4MGEtNDYzNi04OWQ2LTVjYjhlNDY2Mzg5NCIsImlhdCI6MTczNzI3NzE4OCwic3ViIjoiZGV2ZWxvcGVyLzY1ZDUwZjU2LTg4MDAtY2FhOS0wMzA2LWU1NjVkNTAxYTc4MSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI2NC4yOS4xNy42NSIsIjExNy4yMTAuMTc2LjIxMiJdLCJ0eXBlIjoiY2xpZW50In1dfQ.qVRZamn329xVsoQY3QNIV7Xkf8C1wYV7DyqEIjokabhZyvkfeiZ0JULFzJiXXfSx8CzApfPly_vc5V4ILuwGBg`,
         },
       }
     );
