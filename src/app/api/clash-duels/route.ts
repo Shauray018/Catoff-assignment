@@ -40,11 +40,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    const blinkUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/join-duel?duelId=${duel.id}`;
+
     return Response.json(
       {
         success: true,
         duelId: duel.id,
-        opponentJoinLink: `${process.env.NEXT_PUBLIC_BASE_URL}/clash-duels/${duel.id}/join`,
+        opponentJoinLink: blinkUrl,
         duelData: {
           creator: {
             tag: playerData.tag,
