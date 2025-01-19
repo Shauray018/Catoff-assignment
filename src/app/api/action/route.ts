@@ -1,4 +1,9 @@
-import { createActionHeaders, ActionGetResponse } from "@solana/actions";
+import {
+  createActionHeaders,
+  ActionGetResponse,
+  ActionPostRequest,
+  ActionPostResponse,
+} from "@solana/actions";
 
 const headers = {
   ...createActionHeaders({
@@ -22,14 +27,14 @@ export const GET = async () => {
         {
           type: "transaction",
           label: "Create Duel",
-          href: "/api/clash-duels?playerTag={playerTag}&wagerAmount={wagerAmount}&token={token}", // Updated to new route structure
+          href: "/api/clash-duels",
           parameters: [
             {
               type: "text",
               name: "playerTag",
               label: "Your Clash Royale Player Tag (e.g., #2YCVJ0C9G)",
               required: true,
-              pattern: "^#?[0-9A-Z]{8,}$", // Add pattern validation for Clash Royale tags
+              pattern: "^#?[0-9A-Z]{8,}$",
             },
             {
               type: "number",
@@ -55,6 +60,43 @@ export const GET = async () => {
   };
 
   return Response.json(payload, { headers });
+};
+
+export const POST = async (request: Request) => {
+  const body: ActionPostRequest = await request.json();
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/clash-duels`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body.data),
+      }
+    );
+
+    const duelData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(duelData.error || "Failed to create duel");
+    }
+
+    const payload: ActionPostResponse = {
+      type: "external-link",
+      message: "Duel created successfully!",
+      externalLink: duelData.opponentJoinLink,
+    };
+
+    return Response.json(payload, { headers });
+  } catch (error) {
+    console.error("Error:", error);
+    return Response.json(
+      { error: "Failed to create duel" },
+      { status: 500, headers }
+    );
+  }
 };
 
 export const OPTIONS = async () => {
