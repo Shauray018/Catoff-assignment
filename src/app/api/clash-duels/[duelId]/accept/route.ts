@@ -7,15 +7,25 @@ export async function POST(
   { params }: { params: { duelId: string } }
 ) {
   const { duelId } = params;
-  const searchParams = request.nextUrl.searchParams;
-  const playerTag = searchParams.get("playerTag");
-
-  if (!playerTag) {
-    return Response.json({ error: "Player tag is required" }, { status: 400 });
-  }
 
   try {
+    // Parse request body
+    const data = await request.json();
+    const playerTag = data?.playerTag;
+
+    console.log("Accepting duel:", { duelId, playerTag }); // Debug log
+
+    if (!playerTag) {
+      return Response.json(
+        { error: "Player tag is required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if duel exists
     const duel = await getDuel(duelId);
+    console.log("Duel found:", duel); // Debug log
+
     if (!duel) {
       return Response.json({ error: "Duel not found" }, { status: 404 });
     }
@@ -27,7 +37,10 @@ export async function POST(
       );
     }
 
+    // Validate player
     const playerData = await validatePlayer(playerTag);
+    console.log("Player validated:", playerTag); // Debug log
+
     if (!playerData) {
       return Response.json(
         { error: "Invalid Clash Royale player tag" },
@@ -35,15 +48,25 @@ export async function POST(
       );
     }
 
+    console.log(
+      "kill me now" + playerData.tag,
+      playerData.name,
+      playerData.trophies
+    );
+    // Accept duel
     const updatedDuel = await acceptDuel(duelId, {
       tag: playerData.tag,
       name: playerData.name,
       trophies: playerData.trophies,
     });
+    console.log("Duel accepted:", updatedDuel); // Debug log
 
     return Response.json({ success: true, duel: updatedDuel });
   } catch (error) {
-    console.error("Error accepting duel:", error);
-    return Response.json({ error: "Failed to accept duel" }, { status: 500 });
+    console.error("Error accepting duel:", error); // Detailed error log
+    return Response.json(
+      { error: "Failed to accept duel", details: error.message },
+      { status: 500 }
+    );
   }
 }

@@ -1,6 +1,22 @@
 import { NextRequest } from "next/server";
 import { validatePlayer } from "@/utils/clash-royale";
-import { createDuel, getPlayerDuels } from "@/utils/duel-service";
+import { createDuel, getDuels, getPlayerDuels } from "@/utils/duel-service";
+import { getDuelById } from "@/utils/duel-service";
+
+export async function GET(request: NextRequest) {
+  try {
+    const duel = await getDuels();
+
+    if (!duel) {
+      return Response.json({ error: "Duel not found" }, { status: 404 });
+    }
+
+    return Response.json(duel);
+  } catch (error) {
+    console.error("Error fetching duel:", error);
+    return Response.json({ error: "Failed to fetch duel" }, { status: 500 });
+  }
+}
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -72,28 +88,28 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const playerTag = searchParams.get("playerTag");
+// export async function GET(request: NextRequest) {
+//   const searchParams = request.nextUrl.searchParams;
+//   const playerTag = searchParams.get("playerTag");
 
-  if (!playerTag) {
-    return Response.json(
-      { error: "Player tag is required" },
-      { status: 400, headers }
-    );
-  }
+//   if (!playerTag) {
+//     return Response.json(
+//       { error: "Player tag is required" },
+//       { status: 400, headers }
+//     );
+//   }
 
-  try {
-    const duels = await getPlayerDuels(playerTag);
-    return Response.json({ duels }, { headers });
-  } catch (error) {
-    console.error("Error fetching duels:", error);
-    return Response.json(
-      { error: "Failed to fetch duels" },
-      { status: 500, headers }
-    );
-  }
-}
+//   try {
+//     const duels = await getPlayerDuels(playerTag);
+//     return Response.json({ duels }, { headers });
+//   } catch (error) {
+//     console.error("Error fetching duels:", error);
+//     return Response.json(
+//       { error: "Failed to fetch duels" },
+//       { status: 500, headers }
+//     );
+//   }
+// }
 
 export async function OPTIONS() {
   return new Response(null, { headers });
